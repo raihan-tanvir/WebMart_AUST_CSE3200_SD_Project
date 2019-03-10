@@ -1,0 +1,478 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="webMartDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Area">
+          <Key>
+            <PropertyRef Name="AreaCode" />
+          </Key>
+          <Property Name="AreaCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="CUSTOMER">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Age" Type="int" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="Occupation" Type="varchar" MaxLength="50" />
+          <Property Name="Salary" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="AreaCode" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MANUFACTURER">
+          <Key>
+            <PropertyRef Name="ManufacturerId" />
+          </Key>
+          <Property Name="ManufacturerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="11" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ORDERs">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="OrderDate" Type="date" Nullable="false" />
+          <Property Name="OrderUnit" Type="int" Nullable="false" />
+          <Property Name="OrderAmount" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRODUCT">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Unit" Type="int" Nullable="false" />
+          <Property Name="UnitPrice" Type="int" Nullable="false" />
+          <Property Name="Vat" Type="int" Nullable="false" />
+          <Property Name="SupplierId" Type="int" Nullable="false" />
+          <Property Name="ManufacturerId" Type="int" Nullable="false" />
+          <Property Name="ProductTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductType">
+          <Key>
+            <PropertyRef Name="ProductTypeId" />
+          </Key>
+          <Property Name="ProductTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SUPPLIER">
+          <Key>
+            <PropertyRef Name="SupplierId" />
+          </Key>
+          <Property Name="SupplierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="11" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__CUSTOMER__AreaCo__060DEAE8">
+          <End Role="Area" Type="Self.Area" Multiplicity="1" />
+          <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="AreaCode" />
+            </Principal>
+            <Dependent Role="CUSTOMER">
+              <PropertyRef Name="AreaCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ORDERs__Customer__2E1BDC42">
+          <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />
+          <End Role="ORDERs" Type="Self.ORDERs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="ORDERs">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ORDERs__ProductI__2F10007B">
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="1" />
+          <End Role="ORDERs" Type="Self.ORDERs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ORDERs">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PRODUCT__Manufac__286302EC">
+          <End Role="MANUFACTURER" Type="Self.MANUFACTURER" Multiplicity="1" />
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MANUFACTURER">
+              <PropertyRef Name="ManufacturerId" />
+            </Principal>
+            <Dependent Role="PRODUCT">
+              <PropertyRef Name="ManufacturerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PRODUCT__Product__29572725">
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="1" />
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="ProductTypeId" />
+            </Principal>
+            <Dependent Role="PRODUCT">
+              <PropertyRef Name="ProductTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PRODUCT__Supplie__276EDEB3">
+          <End Role="SUPPLIER" Type="Self.SUPPLIER" Multiplicity="1" />
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SUPPLIER">
+              <PropertyRef Name="SupplierId" />
+            </Principal>
+            <Dependent Role="PRODUCT">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="webMartDbModelStoreContainer">
+          <EntitySet Name="Area" EntityType="Self.Area" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CUSTOMER" EntityType="Self.CUSTOMER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MANUFACTURER" EntityType="Self.MANUFACTURER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORDERs" EntityType="Self.ORDERs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCT" EntityType="Self.PRODUCT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductType" EntityType="Self.ProductType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SUPPLIER" EntityType="Self.SUPPLIER" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__CUSTOMER__AreaCo__060DEAE8" Association="Self.FK__CUSTOMER__AreaCo__060DEAE8">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="CUSTOMER" EntitySet="CUSTOMER" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ORDERs__Customer__2E1BDC42" Association="Self.FK__ORDERs__Customer__2E1BDC42">
+            <End Role="CUSTOMER" EntitySet="CUSTOMER" />
+            <End Role="ORDERs" EntitySet="ORDERs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ORDERs__ProductI__2F10007B" Association="Self.FK__ORDERs__ProductI__2F10007B">
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
+            <End Role="ORDERs" EntitySet="ORDERs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PRODUCT__Manufac__286302EC" Association="Self.FK__PRODUCT__Manufac__286302EC">
+            <End Role="MANUFACTURER" EntitySet="MANUFACTURER" />
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PRODUCT__Product__29572725" Association="Self.FK__PRODUCT__Product__29572725">
+            <End Role="ProductType" EntitySet="ProductType" />
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PRODUCT__Supplie__276EDEB3" Association="Self.FK__PRODUCT__Supplie__276EDEB3">
+            <End Role="SUPPLIER" EntitySet="SUPPLIER" />
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="webMartDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Area">
+          <Key>
+            <PropertyRef Name="AreaCode" />
+          </Key>
+          <Property Name="AreaCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CUSTOMERs" Relationship="Self.FK__CUSTOMER__AreaCo__060DEAE8" FromRole="Area" ToRole="CUSTOMER" />
+        </EntityType>
+        <EntityType Name="CUSTOMER">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Occupation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Salary" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AreaCode" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Area" Relationship="Self.FK__CUSTOMER__AreaCo__060DEAE8" FromRole="CUSTOMER" ToRole="Area" />
+          <NavigationProperty Name="ORDERs" Relationship="Self.FK__ORDERs__Customer__2E1BDC42" FromRole="CUSTOMER" ToRole="ORDERs" />
+        </EntityType>
+        <EntityType Name="MANUFACTURER">
+          <Key>
+            <PropertyRef Name="ManufacturerId" />
+          </Key>
+          <Property Name="ManufacturerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="PRODUCTs" Relationship="Self.FK__PRODUCT__Manufac__286302EC" FromRole="MANUFACTURER" ToRole="PRODUCT" />
+        </EntityType>
+        <EntityType Name="ORDER">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="OrderUnit" Type="Int32" Nullable="false" />
+          <Property Name="OrderAmount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="CUSTOMER" Relationship="Self.FK__ORDERs__Customer__2E1BDC42" FromRole="ORDERs" ToRole="CUSTOMER" />
+          <NavigationProperty Name="PRODUCT" Relationship="Self.FK__ORDERs__ProductI__2F10007B" FromRole="ORDERs" ToRole="PRODUCT" />
+        </EntityType>
+        <EntityType Name="PRODUCT">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Unit" Type="Int32" Nullable="false" />
+          <Property Name="UnitPrice" Type="Int32" Nullable="false" />
+          <Property Name="Vat" Type="Int32" Nullable="false" />
+          <Property Name="SupplierId" Type="Int32" Nullable="false" />
+          <Property Name="ManufacturerId" Type="Int32" Nullable="false" />
+          <Property Name="ProductTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MANUFACTURER" Relationship="Self.FK__PRODUCT__Manufac__286302EC" FromRole="PRODUCT" ToRole="MANUFACTURER" />
+          <NavigationProperty Name="ORDERs" Relationship="Self.FK__ORDERs__ProductI__2F10007B" FromRole="PRODUCT" ToRole="ORDERs" />
+          <NavigationProperty Name="ProductType" Relationship="Self.FK__PRODUCT__Product__29572725" FromRole="PRODUCT" ToRole="ProductType" />
+          <NavigationProperty Name="SUPPLIER" Relationship="Self.FK__PRODUCT__Supplie__276EDEB3" FromRole="PRODUCT" ToRole="SUPPLIER" />
+        </EntityType>
+        <EntityType Name="ProductType">
+          <Key>
+            <PropertyRef Name="ProductTypeId" />
+          </Key>
+          <Property Name="ProductTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="PRODUCTs" Relationship="Self.FK__PRODUCT__Product__29572725" FromRole="ProductType" ToRole="PRODUCT" />
+        </EntityType>
+        <EntityType Name="SUPPLIER">
+          <Key>
+            <PropertyRef Name="SupplierId" />
+          </Key>
+          <Property Name="SupplierId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="PRODUCTs" Relationship="Self.FK__PRODUCT__Supplie__276EDEB3" FromRole="SUPPLIER" ToRole="PRODUCT" />
+        </EntityType>
+        <Association Name="FK__CUSTOMER__AreaCo__060DEAE8">
+          <End Role="Area" Type="Self.Area" Multiplicity="1" />
+          <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="AreaCode" />
+            </Principal>
+            <Dependent Role="CUSTOMER">
+              <PropertyRef Name="AreaCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ORDERs__Customer__2E1BDC42">
+          <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />
+          <End Role="ORDERs" Type="Self.ORDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="ORDERs">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PRODUCT__Manufac__286302EC">
+          <End Role="MANUFACTURER" Type="Self.MANUFACTURER" Multiplicity="1" />
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MANUFACTURER">
+              <PropertyRef Name="ManufacturerId" />
+            </Principal>
+            <Dependent Role="PRODUCT">
+              <PropertyRef Name="ManufacturerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ORDERs__ProductI__2F10007B">
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="1" />
+          <End Role="ORDERs" Type="Self.ORDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ORDERs">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PRODUCT__Product__29572725">
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="1" />
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="ProductTypeId" />
+            </Principal>
+            <Dependent Role="PRODUCT">
+              <PropertyRef Name="ProductTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PRODUCT__Supplie__276EDEB3">
+          <End Role="SUPPLIER" Type="Self.SUPPLIER" Multiplicity="1" />
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SUPPLIER">
+              <PropertyRef Name="SupplierId" />
+            </Principal>
+            <Dependent Role="PRODUCT">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WebMartDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Areas" EntityType="Self.Area" />
+          <EntitySet Name="CUSTOMERs" EntityType="Self.CUSTOMER" />
+          <EntitySet Name="MANUFACTURERs" EntityType="Self.MANUFACTURER" />
+          <EntitySet Name="ORDERs" EntityType="Self.ORDER" />
+          <EntitySet Name="PRODUCTs" EntityType="Self.PRODUCT" />
+          <EntitySet Name="ProductTypes" EntityType="Self.ProductType" />
+          <EntitySet Name="SUPPLIERs" EntityType="Self.SUPPLIER" />
+          <AssociationSet Name="FK__CUSTOMER__AreaCo__060DEAE8" Association="Self.FK__CUSTOMER__AreaCo__060DEAE8">
+            <End Role="Area" EntitySet="Areas" />
+            <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ORDERs__Customer__2E1BDC42" Association="Self.FK__ORDERs__Customer__2E1BDC42">
+            <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
+            <End Role="ORDERs" EntitySet="ORDERs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PRODUCT__Manufac__286302EC" Association="Self.FK__PRODUCT__Manufac__286302EC">
+            <End Role="MANUFACTURER" EntitySet="MANUFACTURERs" />
+            <End Role="PRODUCT" EntitySet="PRODUCTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ORDERs__ProductI__2F10007B" Association="Self.FK__ORDERs__ProductI__2F10007B">
+            <End Role="PRODUCT" EntitySet="PRODUCTs" />
+            <End Role="ORDERs" EntitySet="ORDERs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PRODUCT__Product__29572725" Association="Self.FK__PRODUCT__Product__29572725">
+            <End Role="ProductType" EntitySet="ProductTypes" />
+            <End Role="PRODUCT" EntitySet="PRODUCTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PRODUCT__Supplie__276EDEB3" Association="Self.FK__PRODUCT__Supplie__276EDEB3">
+            <End Role="SUPPLIER" EntitySet="SUPPLIERs" />
+            <End Role="PRODUCT" EntitySet="PRODUCTs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="webMartDbModelStoreContainer" CdmEntityContainer="WebMartDbEntities">
+          <EntitySetMapping Name="Areas">
+            <EntityTypeMapping TypeName="webMartDbModel.Area">
+              <MappingFragment StoreEntitySet="Area">
+                <ScalarProperty Name="AreaCode" ColumnName="AreaCode" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CUSTOMERs">
+            <EntityTypeMapping TypeName="webMartDbModel.CUSTOMER">
+              <MappingFragment StoreEntitySet="CUSTOMER">
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Occupation" ColumnName="Occupation" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="AreaCode" ColumnName="AreaCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MANUFACTURERs">
+            <EntityTypeMapping TypeName="webMartDbModel.MANUFACTURER">
+              <MappingFragment StoreEntitySet="MANUFACTURER">
+                <ScalarProperty Name="ManufacturerId" ColumnName="ManufacturerId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORDERs">
+            <EntityTypeMapping TypeName="webMartDbModel.ORDER">
+              <MappingFragment StoreEntitySet="ORDERs">
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="OrderUnit" ColumnName="OrderUnit" />
+                <ScalarProperty Name="OrderAmount" ColumnName="OrderAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCTs">
+            <EntityTypeMapping TypeName="webMartDbModel.PRODUCT">
+              <MappingFragment StoreEntitySet="PRODUCT">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="Vat" ColumnName="Vat" />
+                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+                <ScalarProperty Name="ManufacturerId" ColumnName="ManufacturerId" />
+                <ScalarProperty Name="ProductTypeID" ColumnName="ProductTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductTypes">
+            <EntityTypeMapping TypeName="webMartDbModel.ProductType">
+              <MappingFragment StoreEntitySet="ProductType">
+                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SUPPLIERs">
+            <EntityTypeMapping TypeName="webMartDbModel.SUPPLIER">
+              <MappingFragment StoreEntitySet="SUPPLIER">
+                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
